@@ -135,31 +135,8 @@ function create() {
         gridGfx.lineBetween(0, gy, MAP_W, gy);
     }
 
-    // Place cameras
-    CAMERAS.forEach((cam) => {
-        const camSprite = scene.add.image(cam.x, cam.y, "camera").setAlpha(0.5);
-        // Pulse animation
-        scene.tweens.add({
-            targets: camSprite,
-            scaleX: 1.15,
-            scaleY: 1.15,
-            alpha: 0.7,
-            duration: 1200,
-            yoyo: true,
-            repeat: -1,
-            ease: "Sine.easeInOut",
-        });
-        cameraSprites.push(camSprite);
-
-        // Label
-        scene.add
-            .text(cam.x, cam.y - 24, `📷 ${cam.id}`, {
-                fontSize: "11px",
-                color: "#7cba7c",
-                fontFamily: "Inter, sans-serif",
-            })
-            .setOrigin(0.5);
-    });
+    // Cameras are HIDDEN from players — no visible sprites or labels.
+    // Detection still works via the overlap check in update().
 
     // Player sprite
     mySprite = scene.physics.add.image(
@@ -229,23 +206,12 @@ function update() {
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < CAPTURE_RADIUS) {
-            // Show ring
-            if (!scene.detectionRings[cam.id]) {
-                const ring = scene.add.image(cam.x, cam.y, "ring").setAlpha(0.6);
-                scene.detectionRings[cam.id] = ring;
-            }
-
             // Trigger capture (cooldown prevents spam)
+            // No visual ring — cameras are invisible to players
             const now = Date.now();
             if (!triggerCooldowns[cam.id] || now - triggerCooldowns[cam.id] > 2000) {
                 triggerCooldowns[cam.id] = now;
                 socket.emit("camera-trigger", { cameraId: cam.id });
-            }
-        } else {
-            // Remove ring
-            if (scene.detectionRings[cam.id]) {
-                scene.detectionRings[cam.id].destroy();
-                delete scene.detectionRings[cam.id];
             }
         }
     });
