@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Control easing of aesthetics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ease_aes {gganimate}"><tr><td>ease_aes {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Control easing of aesthetics</h2>
+
+<h3>Description</h3>
+
+<p>Easing defines how a value change to another during tweening. Will it
+progress linearly, or maybe start slowly and then build up momentum. In
+<code>gganimate</code>, each aesthetic or computed variable can be tweened with
+individual easing functions using the <code>ease_aes()</code> function. All easing
+functions implemented in <code>tweenr</code> are available, see <a href="../../tweenr/help/display_ease.html">tweenr::display_ease</a>
+for an overview. Setting an ease for <code>x</code> and/or <code>y</code> will also affect the
+other related positional aesthetics (e.g. <code>xmin</code>, <code>yend</code>, etc).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ease_aes(default = "linear", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>default</code></td>
+<td>
+<p>The default easing function to use (defaults to <code>'linear'</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Override easing for specific aesthetics</p>
+</td></tr>
+</table>
+
+
+<h3>Easing functions</h3>
+
+
+<ul>
+<li> <p><strong>quadratic</strong> Models a power-of-2 function
+</p>
+</li>
+<li> <p><strong>cubic</strong> Models a power-of-3 function
+</p>
+</li>
+<li> <p><strong>quartic</strong> Models a power-of-4 function
+</p>
+</li>
+<li> <p><strong>quintic</strong> Models a power-of-5 function
+</p>
+</li>
+<li> <p><strong>sine</strong> Models a sine function
+</p>
+</li>
+<li> <p><strong>circular</strong> Models a pi/2 circle arc
+</p>
+</li>
+<li> <p><strong>exponential</strong> Models an exponential function
+</p>
+</li>
+<li> <p><strong>elastic</strong> Models an elastic release of energy
+</p>
+</li>
+<li> <p><strong>back</strong> Models a pullback and relase
+</p>
+</li>
+<li> <p><strong>bounce</strong> Models the bouncing of a ball
+</p>
+</li></ul>
+
+<p><em>Modifiers</em> <br />
+</p>
+
+<ul>
+<li> <p><strong>-in</strong> The easing function is applied as-is
+</p>
+</li>
+<li> <p><strong>-out</strong> The easing function is applied in reverse
+</p>
+</li>
+<li> <p><strong>-in-out</strong> The first half of the transition it is applied as-is, while in
+the last half it is reversed
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(mtcars, aes(mpg, disp)) +
+  transition_states(gear, transition_length = 2, state_length = 1) +
+  enter_fade() +
+  exit_fade()
+
+## Not run: 
+# Default uses linear easing
+animate(anim)
+
+## End(Not run)
+
+# Change all to 'cubic-in-out' for a smoother appearance
+anim1 &lt;- anim +
+  ease_aes('cubic-in-out')
+## Not run: 
+animate(anim1)
+
+## End(Not run)
+
+# Only change easing of y variables
+anim2 &lt;- anim +
+  ease_aes(y = 'bounce-in')
+## Not run: 
+animate(anim2)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

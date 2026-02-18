@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Wrap an image sprite for easy handling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sprite_file {gganimate}"><tr><td>sprite_file {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Wrap an image sprite for easy handling</h2>
+
+<h3>Description</h3>
+
+<p>This function is equivalent to <code><a href="../../gganimate/help/gif_file.html">gif_file()</a></code> but works for animations encoded
+as a sprite. A sprite is a single image file where each frame of the
+animation is stacked next to each other. The animation then happens by
+changing what slice of the image is shown. The implementation used allow
+users to click on the animation in order to toggle pause/play.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sprite_file(file, fps, width, full_width, height)
+
+## S3 method for class 'sprite_image'
+print(x, width = NULL, ...)
+
+knit_print.sprite_image(x, options, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>A png file with frames placed horizontally</p>
+</td></tr>
+<tr valign="top"><td><code>fps</code></td>
+<td>
+<p>The framerate for the sprite animation</p>
+</td></tr>
+<tr valign="top"><td><code>width, height</code></td>
+<td>
+<p>The dimension of a single frame</p>
+</td></tr>
+<tr valign="top"><td><code>full_width</code></td>
+<td>
+<p>The width of the whole image</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>sprite_image</code> object</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed on</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>sprite_file</code> returns a <code>sprite_image</code> object which is a shallow wrapper
+around the file path text string along with dimensions and fps used for
+animating the sprite when printing.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

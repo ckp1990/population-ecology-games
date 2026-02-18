@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Wrap a gif file for easy handling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gif_file {gganimate}"><tr><td>gif_file {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Wrap a gif file for easy handling</h2>
+
+<h3>Description</h3>
+
+<p>This is a simple class for gif files that takes care printing the file
+correctly in different environment (e.g. knitr, RStudio, etc.). If your
+renderer produces a gif file you can wrap the final output in <code>gif_file</code> to
+get all of these benefits for free.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gif_file(file)
+
+## S3 method for class 'gif_image'
+print(x, ...)
+
+knit_print.gif_image(x, options, ...)
+
+## S3 method for class 'gif_image'
+split(x, f, drop = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>The gif file to be wrapped</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>gif_image</code> object</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed on</p>
+</td></tr>
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p>a ‘factor’ in the sense that <a href="../../base/help/factor.html">as.factor(f)</a> defines
+the grouping, or a list of such factors in which case their interaction is
+used for the grouping.</p>
+</td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+<p>logical indicating if levels that do not occur should be dropped
+(if <code>f</code> is a <code>factor</code> or a list).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>gif_file</code> returns a <code>gif_image</code> object. <code>split</code> returns a list of
+<code>magick-image</code> objects and requires magick to work.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

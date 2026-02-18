@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Wrap a video file for easy handling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for video_file {gganimate}"><tr><td>video_file {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Wrap a video file for easy handling</h2>
+
+<h3>Description</h3>
+
+<p>This function is equivalent to <code><a href="../../gganimate/help/gif_file.html">gif_file()</a></code> but works for arbitrary video
+file formats. There are some caveats involved though, most notably it doesn't
+currently supports splitting so you can't easily use this output together
+with <code><a href="../../gganimate/help/split_animation.html">split_animation()</a></code>. Graceful printing is contingent on the file format.
+Only <code>mp4</code>, <code>webm</code>, and <code>ogg</code> is supported by the HTML format and can thus be
+shown in the RStudio viewer and inside HTML documents created with knitr.
+Other formats will be opened in their default OS-specific viewer.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+video_file(file)
+
+## S3 method for class 'video_file'
+print(x, width = NULL, ...)
+
+knit_print.video_file(x, options, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>A video file</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>video_file</code> object</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width the output should be scaled to</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed on</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>video_file</code> returns a <code>video_file</code> object which is a shallow wrapper
+around the file path text string.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

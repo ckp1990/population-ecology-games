@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Label numbers, avoiding scientific notation where possible</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for label_number_auto {scales}"><tr><td>label_number_auto {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Label numbers, avoiding scientific notation where possible</h2>
+
+<h3>Description</h3>
+
+<p>Switches between <code><a href="../../scales/help/number_format.html">number_format()</a></code> and <code><a href="../../scales/help/scientific_format.html">scientific_format()</a></code> based on a set of
+heuristics designed to automatically generate useful labels across a wide
+range of inputs
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+label_number_auto()
+</pre>
+
+
+<h3>Value</h3>
+
+<p>All <code>label_()</code> functions return a &quot;labelling&quot; function, i.e. a function that
+takes a vector <code>x</code> and returns a character vector of <code>length(x)</code> giving a
+label for each input value.
+</p>
+<p>Labelling functions are designed to be used with the <code>labels</code> argument of
+ggplot2 scales. The examples demonstrate their use with x scales, but
+they work similarly for all scales, including those that generate legends
+rather than axes.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other labels for continuous scales: 
+<code><a href="../../scales/help/label_bytes.html">label_bytes</a>()</code>,
+<code><a href="../../scales/help/label_currency.html">label_currency</a>()</code>,
+<code><a href="../../scales/help/label_glue.html">label_glue</a>()</code>,
+<code><a href="../../scales/help/label_number_si.html">label_number_si</a>()</code>,
+<code><a href="../../scales/help/label_ordinal.html">label_ordinal</a>()</code>,
+<code><a href="../../scales/help/label_parse.html">label_parse</a>()</code>,
+<code><a href="../../scales/help/label_percent.html">label_percent</a>()</code>,
+<code><a href="../../scales/help/label_pvalue.html">label_pvalue</a>()</code>,
+<code><a href="../../scales/help/label_scientific.html">label_scientific</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Very small and very large numbers get scientific notation
+demo_continuous(c(0, 1e-6), labels = label_number_auto())
+demo_continuous(c(0, 1e9), labels = label_number_auto())
+
+# Other ranges get the numbers printed in full
+demo_continuous(c(0, 1e-3), labels = label_number_auto())
+demo_continuous(c(0, 1), labels = label_number_auto())
+demo_continuous(c(0, 1e3), labels = label_number_auto())
+demo_continuous(c(0, 1e6), labels = label_number_auto())
+
+# Transformation is applied individually so you get as little
+# scientific notation as possible
+demo_log10(c(1, 1e7), labels = label_number_auto())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

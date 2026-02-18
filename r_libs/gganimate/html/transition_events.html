@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transition individual events in and out</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transition_events {gganimate}"><tr><td>transition_events {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transition individual events in and out</h2>
+
+<h3>Description</h3>
+
+<p>This transition treats each visual element as an event in time and allows you
+to control the duration and enter/exit length individually for each event.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transition_events(
+  start,
+  end = NULL,
+  range = NULL,
+  enter_length = NULL,
+  exit_length = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>start, end</code></td>
+<td>
+<p>The unquoted expression giving the start and end time of
+each event. If <code>end</code>is <code>NULL</code> the event will be treated as having no duration.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>The range the animation should span. Defaults to the range of
+the events from they enter to they have exited.</p>
+</td></tr>
+<tr valign="top"><td><code>enter_length, exit_length</code></td>
+<td>
+<p>The unquoted expression giving the length to
+be used for enter and exit for each event.</p>
+</td></tr>
+</table>
+
+
+<h3>Label variables</h3>
+
+<p><code>transition_components</code> makes the following variables available for string
+literal interpretation, in addition to the general ones provided by
+<code><a href="../../gganimate/help/animate.html">animate()</a></code>:
+</p>
+
+<ul>
+<li> <p><strong>frame_time</strong> gives the time that the current frame corresponds to
+</p>
+</li></ul>
+
+
+
+<h3>Object permanence</h3>
+
+<p><code>transition_events</code> does not link rows across data to the same graphic
+element, so elements will be defined uniquely by each row and its specific
+start, end, enter and exit.
+</p>
+
+
+<h3>Computed Variables</h3>
+
+<p>It is possible to use variables calculated by the statistic to define the
+transition. Simply inclose the variable in <code>stat()</code> in the same way as when
+using computed variables in aesthetics.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other transitions: 
+<code><a href="../../gganimate/help/transition_components.html">transition_components</a>()</code>,
+<code><a href="../../gganimate/help/transition_filter.html">transition_filter</a>()</code>,
+<code><a href="../../gganimate/help/transition_layers.html">transition_layers</a>()</code>,
+<code><a href="../../gganimate/help/transition_manual.html">transition_manual</a>()</code>,
+<code><a href="../../gganimate/help/transition_null.html">transition_null</a>()</code>,
+<code><a href="../../gganimate/help/transition_reveal.html">transition_reveal</a>()</code>,
+<code><a href="../../gganimate/help/transition_states.html">transition_states</a>()</code>,
+<code><a href="../../gganimate/help/transition_time.html">transition_time</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data &lt;- data.frame(
+  x = 1:10,
+  y = runif(10),
+  begin = runif(10, 1, 100),
+  length = runif(10, 5, 20),
+  enter = runif(10, 5, 10),
+  exit = runif(10, 5, 10)
+)
+
+anim &lt;- ggplot(data, aes(x, y)) +
+  geom_col() +
+  transition_events(start = begin,
+                    end = begin + length,
+                    enter_length = enter,
+                    exit_length = exit) +
+ enter_grow() +
+ exit_drift(x_mod = 11) +
+ exit_fade()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create an animation by specifying the frame membership...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transition_manual {gganimate}"><tr><td>transition_manual {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create an animation by specifying the frame membership directly</h2>
+
+<h3>Description</h3>
+
+<p>This transition allows you to map a variable in your data to a specific frame
+in the animation. No tweening of data will be made and the number of frames
+in the animation will be decided by the number of levels in the frame
+variable.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transition_manual(frames, ..., cumulative = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>frames</code></td>
+<td>
+<p>The unquoted name of the column holding the frame membership.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional variables</p>
+</td></tr>
+<tr valign="top"><td><code>cumulative</code></td>
+<td>
+<p>Keep data from previous frames as part of the current frame
+data</p>
+</td></tr>
+</table>
+
+
+<h3>Label variables</h3>
+
+<p><code>transition_states</code> makes the following variables available for string
+literal interpretation, in addition to the general ones provided by
+<code><a href="../../gganimate/help/animate.html">animate()</a></code>:
+</p>
+
+<ul>
+<li> <p><strong>previous_frame</strong> The name of the last frame the animation was at
+</p>
+</li>
+<li> <p><strong>current_frame</strong> The name of the current frame
+</p>
+</li>
+<li> <p><strong>next_frame</strong> The name of the next frame in the animation
+</p>
+</li></ul>
+
+
+
+<h3>Object permanence</h3>
+
+<p><code>transition_manual</code> does not link rows across data to the same graphic
+element. Every frame is a discrete state and no animation between the states
+is done.
+</p>
+
+
+<h3>Computed Variables</h3>
+
+<p>It is possible to use variables calculated by the statistic to define the
+transition. Simply inclose the variable in <code>stat()</code> in the same way as when
+using computed variables in aesthetics.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other transitions: 
+<code><a href="../../gganimate/help/transition_components.html">transition_components</a>()</code>,
+<code><a href="../../gganimate/help/transition_events.html">transition_events</a>()</code>,
+<code><a href="../../gganimate/help/transition_filter.html">transition_filter</a>()</code>,
+<code><a href="../../gganimate/help/transition_layers.html">transition_layers</a>()</code>,
+<code><a href="../../gganimate/help/transition_null.html">transition_null</a>()</code>,
+<code><a href="../../gganimate/help/transition_reveal.html">transition_reveal</a>()</code>,
+<code><a href="../../gganimate/help/transition_states.html">transition_states</a>()</code>,
+<code><a href="../../gganimate/help/transition_time.html">transition_time</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(mtcars, aes(factor(gear), mpg)) +
+  geom_boxplot() +
+  transition_manual(gear)
+
+# Using `cumulative = TRUE` to keep data from older frames
+anim2 &lt;- ggplot(mtcars, aes(factor(gear), mpg)) +
+  geom_boxplot() +
+  transition_manual(gear, cumulative = TRUE)
+
+# Use `factor()` to set the order of the frames
+anim3 &lt;- ggplot(mtcars, aes(factor(gear), mpg)) +
+  geom_boxplot() +
+  transition_manual(factor(gear, levels = c('4', '3', '5')))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>
