@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capture-Recapture — Ecology Game</title>
+    <meta
+      name="description"
+      content="Multiplayer ecology teaching game — learn the Lincoln-Petersen Capture-Recapture method in real time."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  JOIN SCREEN                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div id="join-screen">
+      <h1>🌿 Capture-Recapture</h1>
+      <p>
+        You are an animal roaming a forest. Move through the map while hidden
+        cameras detect you. The class will estimate the population using the
+        <strong>Lincoln-Petersen Index</strong>.
+      </p>
+      <div class="join-form">
+        <input
+          id="player-name"
+          type="text"
+          placeholder="Enter your name…"
+          maxlength="20"
+          autofocus
+        />
+        <button id="join-btn">Join Game</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  GAME + DASHBOARD                                                  -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div id="game-container">
+      <div class="game-layout">
+        <!-- Phaser canvas is injected here -->
+        <div class="game-col">
+          <div id="phaser-game"></div>
+        </div>
+
+        <!-- Scientist Dashboard -->
+        <div class="dashboard">
+          <!-- Phase -->
+          <div class="panel">
+            <h2>Current Phase</h2>
+            <span id="phase-badge" class="phase-badge phase-capture">
+              Phase 1 — Capture
+            </span>
+            <div class="controls" style="margin-top: 14px">
+              <button id="btn-next" class="btn btn-amber">
+                Next Phase ▶
+              </button>
+              <button id="btn-reset" class="btn btn-red">Reset</button>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="panel">
+            <h2>Lincoln-Petersen Statistics</h2>
+            <div class="stats-grid">
+              <div class="stat-card stat-green">
+                <div class="value" id="stat-M">0</div>
+                <div class="label">M — Marked</div>
+              </div>
+              <div class="stat-card stat-blue">
+                <div class="value" id="stat-C">0</div>
+                <div class="label">C — 2nd Sample</div>
+              </div>
+              <div class="stat-card stat-amber">
+                <div class="value" id="stat-R">0</div>
+                <div class="label">R — Recaptured</div>
+              </div>
+              <div class="stat-card stat-purple">
+                <div class="value" id="stat-actual">0</div>
+                <div class="label">Actual (known)</div>
+              </div>
+            </div>
+            <div class="formula">
+              <strong>N̂ = (M × C) / R</strong>
+            </div>
+          </div>
+
+          <!-- Estimate -->
+          <div class="panel">
+            <div class="estimate-box">
+              <div class="value" id="estimate-value">—</div>
+              <div class="label">Estimated Population (N̂)</div>
+            </div>
+          </div>
+
+          <!-- Players -->
+          <div class="panel">
+            <h2>Players Online</h2>
+            <ul class="player-list" id="player-list"></ul>
+          </div>
+
+          <!-- Event Log -->
+          <div class="panel">
+            <h2>Detection Log</h2>
+            <div class="event-log" id="event-log"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  Scripts                                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

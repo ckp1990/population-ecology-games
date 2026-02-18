@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Define how entering and exiting data behaves</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for enter_exit {gganimate}"><tr><td>enter_exit {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Define how entering and exiting data behaves</h2>
+
+<h3>Description</h3>
+
+<p>The purpose of <code style="white-space: pre;">enter_*()</code> and <code style="white-space: pre;">exit_*()</code> is to control what happens with
+data that does not persist during a tween. In general the non-persistent data
+is transformed to an <em>invisible</em> version that can be tweened to, e.g. by
+setting the opacity to 0 or be moving the element off-screen. It is possible
+to define your own transformations, or rely on some of the build in
+<em>effects</em>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+enter_manual(default = NULL, ..., name = "manual")
+
+enter_appear(early = FALSE, ...)
+
+enter_fade(..., alpha = 0)
+
+enter_grow(..., size = 0)
+
+enter_recolour(..., colour = "white", fill = colour)
+
+enter_recolor(..., color = "white", fill = color)
+
+enter_fly(..., x_loc = NA, y_loc = NA)
+
+enter_drift(..., x_mod = 0, y_mod = 0)
+
+enter_reset()
+
+exit_manual(default = NULL, ..., name = "manual")
+
+exit_disappear(early = FALSE, ...)
+
+exit_fade(..., alpha = 0)
+
+exit_shrink(..., size = 0)
+
+exit_recolour(..., colour = "white", fill = colour)
+
+exit_recolor(..., color = "white", fill = color)
+
+exit_fly(..., x_loc = NA, y_loc = NA)
+
+exit_drift(..., x_mod = 0, y_mod = 0)
+
+exit_reset()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>default</code></td>
+<td>
+<p>A default transformation to use</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional specific transformations either named by the geom
+(e.g. <code>bar</code>, or by its position in the layer stack, e.g. <code>"2"</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>A name for the manual modification (only used when printing the
+object)</p>
+</td></tr>
+<tr valign="top"><td><code>early</code></td>
+<td>
+<p>Should the data appear in the beginning of the transition or in
+the end</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>The start/end transparency.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>The proportional start/end size. <code>0</code> means complete shrinking
+while <code>1</code> means no shrinking</p>
+</td></tr>
+<tr valign="top"><td><code>colour, color, fill</code></td>
+<td>
+<p>The start/end colour and fill the elements should
+(dis)appear into</p>
+</td></tr>
+<tr valign="top"><td><code>x_loc, y_loc</code></td>
+<td>
+<p>Start and end positions of the graphic elements</p>
+</td></tr>
+<tr valign="top"><td><code>x_mod, y_mod</code></td>
+<td>
+<p>Modification to add to the entering or exiting data</p>
+</td></tr>
+</table>
+
+
+<h3>User-defined transformations</h3>
+
+<p>All enter/exit functions allows the user to add additional transformation
+functions targeting specific layers. If the functions are named, then the
+name is understood to reference the class of geoms it applies to. If the
+functions are unnamed or numbered they will apply to the layer with a
+matching index in the stack. Named and indexed transformations cannot be
+mixed.
+</p>
+<p>All modifications except <code>enter_manual()</code>/<code>exit_manual()</code> sets a range of
+modifications already, but further can be added with the <code>...</code>. For the
+manual versions a <code>default</code> transformation can be set which will apply to all
+layers that does not match any of the other given transformations. Often a
+single default transformation is enough and no specific transformations are
+needed.
+</p>
+<p>Transformation can be given as any expression that can be converted with
+<code><a href="../../rlang/help/as_function.html">rlang::as_function()</a></code>. This means that <code>purrr</code> style lambda functions are
+allowed in addition to anonymous functions etc. Transformation functions must
+accept a data.frame and return a data.frame of the same dimensions. The
+function will be called with the entering/exiting layer data, except for the
+case of polygon- and path-like layers in which case the function recieves the
+entering/exiting polygon/path data one by one. A special option is to set a
+transformation as <code>NULL</code> instead of a function. In that case the entering and
+exiting data will simply appear/disappear when it is no longer part of a
+frame.
+</p>
+
+
+<h3>Modification composition</h3>
+
+<p>Enter and exit modifications are composable so that multiple different ones
+can be added to an animation and will be applied in turn. You can also
+combine multiples and save them as a new enter or exit modification using
+<code>c()</code>.
+</p>
+<p>Due to the composable nature of enter and exit modifications it is not
+possible to overwrite a prior modification by adding a new. If it is needed
+to start from scratch then the sentinels <code>enter_reset()</code> and <code>exit_reset()</code>
+are provided which clears all prior modifications.
+</p>
+
+
+<h3>Modification types</h3>
+
+<p>A range of modification types are provided by <code>gganimate</code> and using
+<code>enter_manual()</code>/<code>exit_manual()</code> or modification composition it is possible
+to create your own.
+</p>
+<p><strong>appear</strong>/<strong>disappear</strong> will simply make elements appear/disappear at either
+the start or end of the transition. The default if nothing else is added.
+</p>
+<p><strong>fade</strong> will simply set the alpha value to zero making the elements fade
+in/out during the transition.
+</p>
+<p><strong>grow</strong>/<strong>shrink</strong> will set the elements to zero size making them gradually
+grow into / shrink out of existence. Zero size depends on the type of layer,
+e.g. polygons/paths will have all their points set to the mean, while points
+will have size/stroke set to zero.
+</p>
+<p><strong>recolour</strong>/<strong>recolor</strong> will change the colour and/or fill of the elements
+making them gradually change from the defined colour and into their try
+colour. Be aware that unless the colour and fill are set to the same as the
+background colour of the plot this modification needs to be combined with
+others to ensure that elements does not abruptly appear.
+</p>
+<p><strong>fly</strong> will set a specific x and y position where all elements will enter
+from/ exit to, irrespectible of their real position.
+</p>
+<p><strong>drift</strong> will modify the real position of the entering and exiting elements
+by a specified amount, e.g. setting <code>x_mod = -5</code> will let all elements enter
+from/exit to the left with a terminal position 5 points to the left of the
+real position.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Default is appear/disappear
+anim &lt;- ggplot(mtcars, aes(factor(gear), mpg)) +
+  geom_boxplot() +
+  transition_states(gear, 2, 1)
+
+# Fade-in, fly-out
+anim1 &lt;- anim +
+  enter_fade() +
+  exit_fly(x_loc = 7, y_loc = 40)
+
+# Enter and exit accumulates
+anim2 &lt;- anim +
+  enter_fade() + enter_grow() +
+  exit_fly(x_loc = 7, y_loc = 40) + exit_recolour(fill = 'forestgreen')
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

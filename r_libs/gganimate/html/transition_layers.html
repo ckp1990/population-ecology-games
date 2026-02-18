@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Build up a plot, layer by layer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transition_layers {gganimate}"><tr><td>transition_layers {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Build up a plot, layer by layer</h2>
+
+<h3>Description</h3>
+
+<p>This transition gradually adds layers to the plot in the order they have been
+defined. By default prior layers are kept for the remainder of the animation,
+but they can also be set to be removed as the next layer enters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transition_layers(
+  layer_length = 1,
+  transition_length = 1,
+  keep_layers = TRUE,
+  from_blank = TRUE,
+  layer_order = NULL,
+  layer_names = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>layer_length</code></td>
+<td>
+<p>The proportional time to pause at each layer before a new
+one enters</p>
+</td></tr>
+<tr valign="top"><td><code>transition_length</code></td>
+<td>
+<p>The proportional time to use for the entrance of a
+new layer</p>
+</td></tr>
+<tr valign="top"><td><code>keep_layers</code></td>
+<td>
+<p>Either an integer indicating for how many following layers
+the layers should stay on screen or a logical. In the case of the later,
+<code>TRUE</code> will mean keep the layer for the remainder of the animation
+(equivalent to setting it to <code>Inf</code>) and <code>FALSE</code> will mean to transition the
+layer out as the next layer enters.</p>
+</td></tr>
+<tr valign="top"><td><code>from_blank</code></td>
+<td>
+<p>Should the first layer transition in or be present on the
+onset of the animation</p>
+</td></tr>
+<tr valign="top"><td><code>layer_order</code></td>
+<td>
+<p>An alternative order the layers should appear in (default
+to using the stacking order). All other arguments that references the layers
+index in some way refers to this order.</p>
+</td></tr>
+<tr valign="top"><td><code>layer_names</code></td>
+<td>
+<p>A character vector of names for each layers, to be used
+when interpreting label literals</p>
+</td></tr>
+</table>
+
+
+<h3>Label variables</h3>
+
+<p><code>transition_layers</code> makes the following variables available for string
+literal interpretation, in addition to the general ones provided by
+<code><a href="../../gganimate/help/animate.html">animate()</a></code>:
+</p>
+
+<ul>
+<li> <p><strong>transitioning</strong> is a boolean indicating whether the frame is part of the
+transitioning phase
+</p>
+</li>
+<li> <p><strong>previous_layer</strong> The name of the last layer the animation was showing
+</p>
+</li>
+<li> <p><strong>closest_layer</strong> The name of the layer the animation is closest to showing
+</p>
+</li>
+<li> <p><strong>next_layer</strong> The name of the next layer the animation will show
+</p>
+</li>
+<li> <p><strong>nlayers</strong> The total number of layers
+</p>
+</li></ul>
+
+
+
+<h3>Object permanence</h3>
+
+<p><code>transition_layer</code> does not link rows across data to the same graphic
+element, so elements will be defined uniquely by each row and the enter and
+exit of the layer it belongs to.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other transitions: 
+<code><a href="../../gganimate/help/transition_components.html">transition_components</a>()</code>,
+<code><a href="../../gganimate/help/transition_events.html">transition_events</a>()</code>,
+<code><a href="../../gganimate/help/transition_filter.html">transition_filter</a>()</code>,
+<code><a href="../../gganimate/help/transition_manual.html">transition_manual</a>()</code>,
+<code><a href="../../gganimate/help/transition_null.html">transition_null</a>()</code>,
+<code><a href="../../gganimate/help/transition_reveal.html">transition_reveal</a>()</code>,
+<code><a href="../../gganimate/help/transition_states.html">transition_states</a>()</code>,
+<code><a href="../../gganimate/help/transition_time.html">transition_time</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Default is to use layer order and keep layers for duration of animation
+anim &lt;- ggplot(mtcars, aes(mpg, disp)) +
+  geom_point() +
+  geom_smooth(colour = 'grey', se = FALSE) +
+  geom_smooth(aes(colour = factor(gear))) +
+  transition_layers(layer_length = 1, transition_length = 2) +
+  enter_fade() + enter_grow()
+
+# Start with the first layer already present
+anim1 &lt;- ggplot(mtcars, aes(mpg, disp)) +
+  geom_point() +
+  geom_smooth(colour = 'grey', se = FALSE) +
+  geom_smooth(aes(colour = factor(gear))) +
+  transition_layers(layer_length = 1, transition_length = 2,
+                    from_blank = FALSE) +
+  enter_fade() + enter_grow()
+
+# Change the order of the layers
+anim2 &lt;- ggplot(mtcars, aes(mpg, disp)) +
+  geom_point() +
+  geom_smooth(colour = 'grey', se = FALSE) +
+  geom_smooth(aes(colour = factor(gear))) +
+  transition_layers(layer_length = 1, transition_length = 2,
+                    from_blank = FALSE, layer_order = c(3, 1, 2)) +
+  enter_fade() + enter_grow()
+
+# Keep layer 1 for the whole animation, but remove the 2nd layer as the 3rd
+# enters
+anim3 &lt;- ggplot(mtcars, aes(mpg, disp)) +
+  geom_point() +
+  geom_smooth(colour = 'grey', se = FALSE) +
+  geom_smooth(aes(colour = factor(gear))) +
+  transition_layers(layer_length = 1, transition_length = 2,
+                    from_blank = FALSE, keep_layers = c(Inf, 0, 0)) +
+  enter_fade() + enter_grow() +
+  exit_fade() + exit_shrink()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

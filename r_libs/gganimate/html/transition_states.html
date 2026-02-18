@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transition between several distinct stages of the data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transition_states {gganimate}"><tr><td>transition_states {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transition between several distinct stages of the data</h2>
+
+<h3>Description</h3>
+
+<p>This transition splits your data into multiple states based on the levels in
+a given column, much like <code><a href="../../ggplot2/help/facet_wrap.html">ggplot2::facet_wrap()</a></code> splits up the data in
+multiple panels. It then tweens between the defined states and pauses at each
+state. Layers with data without the specified column will be kept constant
+during the animation (again, mimicking <code>facet_wrap</code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transition_states(states, transition_length = 1, state_length = 1, wrap = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>states</code></td>
+<td>
+<p>The unquoted name of the column holding the state levels in the
+data.</p>
+</td></tr>
+<tr valign="top"><td><code>transition_length</code></td>
+<td>
+<p>The relative length of the transition. Will be
+recycled to match the number of states in the data</p>
+</td></tr>
+<tr valign="top"><td><code>state_length</code></td>
+<td>
+<p>The relative length of the pause at the states. Will be
+recycled to match the number of states in the data</p>
+</td></tr>
+<tr valign="top"><td><code>wrap</code></td>
+<td>
+<p>Should the animation <em>wrap-around</em>? If <code>TRUE</code> the last state will
+be transitioned into the first.</p>
+</td></tr>
+</table>
+
+
+<h3>Label variables</h3>
+
+<p><code>transition_states</code> makes the following variables available for string
+literal interpretation, in addition to the general ones provided by
+<code><a href="../../gganimate/help/animate.html">animate()</a></code>:
+</p>
+
+<ul>
+<li> <p><strong>transitioning</strong> is a boolean indicating whether the frame is part of the
+transitioning phase
+</p>
+</li>
+<li> <p><strong>previous_state</strong> The name of the last state the animation was at
+</p>
+</li>
+<li> <p><strong>closest_state</strong> The name of the state closest to this frame
+</p>
+</li>
+<li> <p><strong>next_state</strong> The name of the next state the animation will be part of
+</p>
+</li></ul>
+
+
+
+<h3>Object permanence</h3>
+
+<p><code>transition_states</code> uses the group aesthetic of each layer to identify
+which rows in the input data correspond to the same graphic element and will
+therefore define which elements will turn into each other between states.
+The group aesthetic, if not set, will be calculated from the interaction of all
+discrete aesthetics in the layer (excluding <code>label</code>), so it is often better
+to set it explicitly when animating, to make sure your data is interpreted in
+the right way. If the group aesthetic is not set, and no discrete aesthetics
+exists then all rows will have the same group. If the group aesthetic is not
+unique in each state, then rows will be matched first by group and then by
+index. Unmatched rows will appear/disappear, potentially using an enter or
+exit function.
+</p>
+
+
+<h3>Computed Variables</h3>
+
+<p>It is possible to use variables calculated by the statistic to define the
+transition. Simply inclose the variable in <code>stat()</code> in the same way as when
+using computed variables in aesthetics.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other transitions: 
+<code><a href="../../gganimate/help/transition_components.html">transition_components</a>()</code>,
+<code><a href="../../gganimate/help/transition_events.html">transition_events</a>()</code>,
+<code><a href="../../gganimate/help/transition_filter.html">transition_filter</a>()</code>,
+<code><a href="../../gganimate/help/transition_layers.html">transition_layers</a>()</code>,
+<code><a href="../../gganimate/help/transition_manual.html">transition_manual</a>()</code>,
+<code><a href="../../gganimate/help/transition_null.html">transition_null</a>()</code>,
+<code><a href="../../gganimate/help/transition_reveal.html">transition_reveal</a>()</code>,
+<code><a href="../../gganimate/help/transition_time.html">transition_time</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(iris, aes(Sepal.Width, Petal.Width)) +
+  geom_point() +
+  labs(title = "{closest_state}") +
+  transition_states(Species, transition_length = 3, state_length = 1)
+
+# Use a unique group to avoid matching graphic elements
+iris$group &lt;- seq_len(nrow(iris))
+anim1 &lt;- ggplot(iris, aes(Sepal.Width, Petal.Width, group = group)) +
+  geom_point() +
+  labs(title = "{closest_state}") +
+  transition_states(Species, transition_length = 3, state_length = 1) +
+  enter_fade() +
+  exit_fade()
+
+# Set `wrap = FALSE` to avoid transitioning the last state to the first
+anim2 &lt;- ggplot(iris, aes(Sepal.Width, Petal.Width)) +
+  geom_point() +
+  labs(title = "{closest_state}") +
+  transition_states(Species, transition_length = 3, state_length = 1,
+                    wrap = FALSE)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

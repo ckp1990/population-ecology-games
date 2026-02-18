@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pan and zoom smoothly between different states</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for view_zoom {gganimate}"><tr><td>view_zoom {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pan and zoom smoothly between different states</h2>
+
+<h3>Description</h3>
+
+<p>This view is in many ways equivalent to <code><a href="../../gganimate/help/view_step.html">view_step()</a></code> and
+<code><a href="../../gganimate/help/view_step_manual.html">view_step_manual()</a></code> but instead of simply tweening the bounding box of each
+view it implement the smooth zoom and pan technique developed by Reach &amp;
+North (2018). It gradually zooms out and then in during the pan to allow a
+smooth transition of the view. As with <code><a href="../../gganimate/help/view_step.html">view_step()</a></code> the standard version
+will look at the data present in the calculated frames and set the ranges
+based on that, while the <code style="white-space: pre;">_manual</code> version will allow you to define your own
+ranges to zoom between.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+view_zoom(
+  pause_length = 1,
+  step_length = 1,
+  nsteps = NULL,
+  look_ahead = 0,
+  delay = 0,
+  include = FALSE,
+  pan_zoom = 0,
+  ease = "sine-in-out",
+  wrap = TRUE,
+  pause_first = TRUE,
+  fixed_x = FALSE,
+  fixed_y = FALSE,
+  exclude_layer = NULL,
+  aspect_ratio = 1
+)
+
+view_zoom_manual(
+  pause_length = 1,
+  step_length = 1,
+  xmin,
+  xmax,
+  ymin,
+  ymax,
+  delay = 0,
+  pan_zoom = 0,
+  ease = "sine-in-out",
+  wrap = TRUE,
+  pause_first = TRUE,
+  fixed_x = FALSE,
+  fixed_y = FALSE,
+  exclude_layer = NULL,
+  aspect_ratio = 1
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>pause_length</code></td>
+<td>
+<p>The relative length the view will be kept static. Will
+be recycled to match the number of steps</p>
+</td></tr>
+<tr valign="top"><td><code>step_length</code></td>
+<td>
+<p>The relative length the view will use to transition to the
+new position. Will be recycled to match the number of steps</p>
+</td></tr>
+<tr valign="top"><td><code>nsteps</code></td>
+<td>
+<p>The number of steps. If <code>NULL</code> it will be set to the max length
+of <code>pause_length</code> or <code>step_length</code></p>
+</td></tr>
+<tr valign="top"><td><code>look_ahead</code></td>
+<td>
+<p>A relative length to look ahead in the animation to get the
+new zoom area. Allow the view to zoom to where the data will be</p>
+</td></tr>
+<tr valign="top"><td><code>delay</code></td>
+<td>
+<p>A relative length to switch the view back and forth relative to
+the actual frames. E.g. if delay is calculated to 5 frames, frame 6 will get
+the view intended for frame 1.</p>
+</td></tr>
+<tr valign="top"><td><code>include</code></td>
+<td>
+<p>Should the steps include both the start and end frame range</p>
+</td></tr>
+<tr valign="top"><td><code>pan_zoom</code></td>
+<td>
+<p>The tradeoff between pan- and zoom-induced movement. Negative
+values will value zoom over pan and positive values will value pan over zoom</p>
+</td></tr>
+<tr valign="top"><td><code>ease</code></td>
+<td>
+<p>The easing function used for the step</p>
+</td></tr>
+<tr valign="top"><td><code>wrap</code></td>
+<td>
+<p>As in <code><a href="../../gganimate/help/transition_states.html">transition_states()</a></code>. Should the view wrap around and zoom
+back to the first state.</p>
+</td></tr>
+<tr valign="top"><td><code>pause_first</code></td>
+<td>
+<p>Should the view start with a pause. The default is to
+start with a step so that it is aligned to the static period in
+<code><a href="../../gganimate/help/transition_states.html">transition_states()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>fixed_x, fixed_y</code></td>
+<td>
+<p>Either a logical indicating if the dimension should
+not be modified by the view, or a numeric vector giving the lower and upper
+bounds of the dimension. For the latter, an <code>NA</code> value will be substituted
+for whatever is calculated by the view (e.g. <code>fixed_x = c(0, NA)</code>) will fix
+the minimum x value to 0 and let the view calculate the upper bound.</p>
+</td></tr>
+<tr valign="top"><td><code>exclude_layer</code></td>
+<td>
+<p>Integer vector of layer indices that should be ignored
+when calculating the view</p>
+</td></tr>
+<tr valign="top"><td><code>aspect_ratio</code></td>
+<td>
+<p>If the coord is fixed, ensure that the view matches the
+given aspect ratio. Will override anything given in <code>fixed_x</code>/<code>fixed_y</code></p>
+</td></tr>
+<tr valign="top"><td><code>xmin, xmax, ymin, ymax</code></td>
+<td>
+<p>Vectors of even length defining the boundaries of
+the different views to go through</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>Reach, A., North, C. (2018) <em>Smooth, Efficient, and Interruptible Zooming and Panning</em>. IEEE Transactions on Visualization and Computer Graphics DOI:10.1109/TVCG.2018.2800013
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other views: 
+<code><a href="../../gganimate/help/view_follow.html">view_follow</a>()</code>,
+<code><a href="../../gganimate/help/view_static.html">view_static</a>()</code>,
+<code><a href="../../gganimate/help/view_step.html">view_step</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(iris, aes(Petal.Length, Petal.Width, colour = Species)) +
+  geom_point() +
+  transition_states(Species, transition_length = 2, state_length = 1) +
+  shadow_mark(past = TRUE, future = TRUE, colour = 'grey') +
+  view_zoom(pause_length = 1, step_length = 2, nsteps = 3)
+
+# Use pan_zoom to change the relationship between pan- and zoom movement
+# Mainly zooming
+anim1 &lt;- ggplot(iris, aes(Petal.Length, Petal.Width, colour = Species)) +
+  geom_point() +
+  transition_states(Species, transition_length = 2, state_length = 1) +
+  shadow_mark(past = TRUE, future = TRUE, colour = 'grey') +
+  view_zoom(pause_length = 1, step_length = 2, nsteps = 3, pan_zoom = -3)
+
+# Mainly panning
+anim2 &lt;- ggplot(iris, aes(Petal.Length, Petal.Width, colour = Species)) +
+  geom_point() +
+  transition_states(Species, transition_length = 2, state_length = 1) +
+  shadow_mark(past = TRUE, future = TRUE, colour = 'grey') +
+  view_zoom(pause_length = 1, step_length = 2, nsteps = 3, pan_zoom = -3)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Show preceding frames with gradual falloff</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for shadow_wake {gganimate}"><tr><td>shadow_wake {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Show preceding frames with gradual falloff</h2>
+
+<h3>Description</h3>
+
+<p>This shadow is meant to draw a small wake after data by showing the latest
+frames up to the current. You can choose to gradually diminish the size
+and/or opacity of the shadow. The length of the wake is not given in absolute
+frames as that would make the animation susceptible to changes in the
+framerate. Instead it is given as a proportion of the total length of the
+animation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+shadow_wake(
+  wake_length,
+  size = TRUE,
+  alpha = TRUE,
+  colour = NULL,
+  fill = NULL,
+  falloff = "cubic-in",
+  wrap = TRUE,
+  exclude_layer = NULL,
+  exclude_phase = c("enter", "exit")
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>wake_length</code></td>
+<td>
+<p>A number between 0 and 1 giving the length of the wake,
+in relation to the total number of frames.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Numeric indicating the size the wake should end on. If <code>NULL</code>
+then size is not modified. Can also be a boolean with <code>TRUE</code> beeing equal <code>0</code>
+and <code>FALSE</code> beeing equal to <code>NULL</code></p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>as <code>size</code> but for alpha modification of the wake</p>
+</td></tr>
+<tr valign="top"><td><code>colour, fill</code></td>
+<td>
+<p>colour or fill the wake should end on. If <code>NULL</code> they are
+not modified.</p>
+</td></tr>
+<tr valign="top"><td><code>falloff</code></td>
+<td>
+<p>An easing function that control how size and/or alpha should
+change.</p>
+</td></tr>
+<tr valign="top"><td><code>wrap</code></td>
+<td>
+<p>Should the shadow wrap around, so that the first frame will get
+shadows from the end of the animation.</p>
+</td></tr>
+<tr valign="top"><td><code>exclude_layer</code></td>
+<td>
+<p>Indexes of layers that should be excluded.</p>
+</td></tr>
+<tr valign="top"><td><code>exclude_phase</code></td>
+<td>
+<p>Element phases that should not get a shadow. Possible
+values are <code>'enter'</code>, <code>'exit'</code>, <code>'static'</code>, <code>'transition'</code>, and <code>'raw'</code>. If
+<code>NULL</code> all phases will be included. Defaults to <code>'enter'</code> and <code>'exit'</code></p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other shadows: 
+<code><a href="../../gganimate/help/shadow_mark.html">shadow_mark</a>()</code>,
+<code><a href="../../gganimate/help/shadow_null.html">shadow_null</a>()</code>,
+<code><a href="../../gganimate/help/shadow_trail.html">shadow_trail</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(iris, aes(Petal.Length, Sepal.Length)) +
+  geom_point() +
+  labs(title = "{closest_state}") +
+  transition_states(Species, transition_length = 4, state_length = 1)
+
+# `shadow_wake` can be combined with e.g. `transition_states` to show
+# motion of geoms as they are in transition with respect to the selected state.
+anim1 &lt;- anim +
+  shadow_wake(wake_length = 0.05)
+
+# Different qualities can be manipulated by setting a value for it that it
+# should taper off to
+anim2 &lt;- anim +
+  shadow_wake(0.1, size = 10, alpha = FALSE, colour = 'grey92')
+
+# Use `detail` in the `animate()` call to increase the number of calculated
+# frames and thus make the wake smoother
+## Not run: 
+animate(anim2, detail = 5)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

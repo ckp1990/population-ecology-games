@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Save an animation to a file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for anim_save {gganimate}"><tr><td>anim_save {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Save an animation to a file</h2>
+
+<h3>Description</h3>
+
+<p>This function is analogous to <code><a href="../../ggplot2/help/ggsave.html">ggplot2::ggsave()</a></code> in that it by default takes
+the last created animation and saves it to the specific location. As
+<code>gganimate</code> supports arbitrary renderers, and thus return types, the returned
+object must implement a <code>save_animation</code> method to be able to be used with
+<code>anim_save()</code>. This is provided natively for <code>gif_image</code> and <code>magick-image</code>
+objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+anim_save(filename, animation = last_animation(), path = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>filename</code></td>
+<td>
+<p>File name to create on disk.</p>
+</td></tr>
+<tr valign="top"><td><code>animation</code></td>
+<td>
+<p>The animation object to save, as returned by <code><a href="../../gganimate/help/animate.html">animate()</a></code>.
+Defaults to the last rendered animation using <code><a href="../../gganimate/help/last_animation.html">last_animation()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>Path of the directory to save plot to: <code>path</code> and <code>filename</code>
+are combined to create the fully qualified file name. Defaults to the
+working directory.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments passed on to <code><a href="../../gganimate/help/animate.html">animate()</a></code> if <code>animation</code> is a <code>gganim</code>
+object</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

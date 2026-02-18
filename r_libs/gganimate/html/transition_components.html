@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transition individual components through their own lifecycle</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transition_components {gganimate}"><tr><td>transition_components {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transition individual components through their own lifecycle</h2>
+
+<h3>Description</h3>
+
+<p>This transition allows individual visual components to define their own
+&quot;life-cycle&quot;. This means that the final animation will not have any common
+&quot;state&quot; and &quot;transition&quot; phase as any component can be moving or static at
+any point in time.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transition_components(
+  time,
+  range = NULL,
+  enter_length = NULL,
+  exit_length = NULL,
+  id
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>time</code></td>
+<td>
+<p>The unquoted name of the column holding the time for each state
+of the components</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>The range the animation should span. Defaults to the range of
+time plus enter and exit length</p>
+</td></tr>
+<tr valign="top"><td><code>enter_length, exit_length</code></td>
+<td>
+<p>How long time should be spend on enter and
+exit transitions. Defaults to 0</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p><strong>Deprecated</strong></p>
+</td></tr>
+</table>
+
+
+<h3>Label variables</h3>
+
+<p><code>transition_components</code> makes the following variables available for string
+literal interpretation, in addition to the general ones provided by
+<code><a href="../../gganimate/help/animate.html">animate()</a></code>:
+</p>
+
+<ul>
+<li> <p><strong>frame_time</strong> gives the time that the current frame corresponds to
+</p>
+</li></ul>
+
+
+
+<h3>Object permanence</h3>
+
+<p><code>transition_components</code> uses the group aesthetic of each layer to identify
+which rows in the input data correspond to the same graphic element and will
+therefore define stages in time that the element will animate through. The
+group aesthetic, if not set, will be calculated from the interaction of all
+discrete aesthetics in the layer (excluding <code>label</code>), so it is often better
+to set it explicitly when animating, to make sure your data is interpreted in
+the right way. If the group aesthetic is not set, and no discrete aesthetics
+exists then all rows will have the same group.
+</p>
+
+
+<h3>Computed Variables</h3>
+
+<p>It is possible to use variables calculated by the statistic to define the
+transition. Simply inclose the variable in <code>stat()</code> in the same way as when
+using computed variables in aesthetics.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other transitions: 
+<code><a href="../../gganimate/help/transition_events.html">transition_events</a>()</code>,
+<code><a href="../../gganimate/help/transition_filter.html">transition_filter</a>()</code>,
+<code><a href="../../gganimate/help/transition_layers.html">transition_layers</a>()</code>,
+<code><a href="../../gganimate/help/transition_manual.html">transition_manual</a>()</code>,
+<code><a href="../../gganimate/help/transition_null.html">transition_null</a>()</code>,
+<code><a href="../../gganimate/help/transition_reveal.html">transition_reveal</a>()</code>,
+<code><a href="../../gganimate/help/transition_states.html">transition_states</a>()</code>,
+<code><a href="../../gganimate/help/transition_time.html">transition_time</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data &lt;- data.frame(
+  x = runif(10),
+  y = runif(10),
+  size = sample(1:3, 10, TRUE),
+  time = c(1, 4, 6, 7, 9, 6, 7, 8, 9, 10),
+  id = rep(1:2, each = 5)
+)
+
+anim &lt;- ggplot(data, aes(x, y, group = id, size = size)) +
+  geom_point() +
+  transition_components(time)
+
+# By default the time range is set to the range of the time variable (plus
+# any enter and exit length), but this can be overwritten
+anim2 &lt;- ggplot(data, aes(x, y, group = id, size = size)) +
+  geom_point() +
+  transition_components(time, range = c(4, 8))
+
+# If you are using any enter/exit functions you need to give them some time
+anim3 &lt;- ggplot(data, aes(x, y, group = id, size = size)) +
+  geom_point() +
+  transition_components(time, enter_length = 2, exit_length = 2) +
+  enter_grow() +
+  exit_fade()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

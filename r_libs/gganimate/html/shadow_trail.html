@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A trail of evenly spaced old frames</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for shadow_trail {gganimate}"><tr><td>shadow_trail {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A trail of evenly spaced old frames</h2>
+
+<h3>Description</h3>
+
+<p>This shadow will trace the movement in your animation by keeping every <em>n</em>th
+frame and will thus produce a breadcrumb-like trail. Note that the shadow
+frames will not be equidistant in space but in time (that is, if a point
+moves slowly the <em>crumbs</em> will be closer to each other). It is possible to
+modify the look of the shadow by changing the different graphic parameters in
+the data
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+shadow_trail(distance = 0.05, max_frames = Inf, ..., exclude_layer = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>distance</code></td>
+<td>
+<p>The temporal distance between the frames to show, as a
+fraction of the full animation length</p>
+</td></tr>
+<tr valign="top"><td><code>max_frames</code></td>
+<td>
+<p>The maximum number of shadow frames to show</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>changes to the shadow data, e.g. <code>alpha = alpha/2</code> or
+<code>colour = 'grey'</code></p>
+</td></tr>
+<tr valign="top"><td><code>exclude_layer</code></td>
+<td>
+<p>Indexes of layers that should be excluded.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other shadows: 
+<code><a href="../../gganimate/help/shadow_mark.html">shadow_mark</a>()</code>,
+<code><a href="../../gganimate/help/shadow_null.html">shadow_null</a>()</code>,
+<code><a href="../../gganimate/help/shadow_wake.html">shadow_wake</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(airquality, aes(Day, Temp, colour = factor(Month))) +
+  geom_point() +
+  transition_time(Day)
+
+# Change distance between points
+anim1 &lt;- anim +
+  shadow_trail(0.02)
+
+# Style shadow differently
+anim2 &lt;- anim +
+  shadow_trail(alpha = 0.3, shape = 2)
+
+# Restrict the shadow to 10 frames
+anim3 &lt;- anim +
+  shadow_trail(max_frames = 10)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

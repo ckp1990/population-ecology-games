@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reveal data along a given dimension</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transition_reveal {gganimate}"><tr><td>transition_reveal {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Reveal data along a given dimension</h2>
+
+<h3>Description</h3>
+
+<p>This transition allows you to let data gradually appear, based on a given
+time dimension. In contrast to e.g. <code><a href="../../gganimate/help/transition_time.html">transition_time()</a></code> <code>transition_reveal()</code>
+calculates intermediary values at exact positions instead of coercing raw
+values into the closest frame. It further keeps old data for path and polygon
+type layers so that they are gradually build up instead of being a set of
+disconnected segments as will happen when using <code><a href="../../gganimate/help/transition_time.html">transition_time()</a></code> and
+<code><a href="../../gganimate/help/shadow_mark.html">shadow_mark()</a></code> together.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transition_reveal(along, range = NULL, keep_last = TRUE, id)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>along</code></td>
+<td>
+<p>An unquoted expression giving the dimension to tween along. For
+a gradually revealing time series this should be set to the same as the <code>x</code>
+aesthetic.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>The time range to animate. If <code>NULL</code> it will be set to the range
+of <code>along</code></p>
+</td></tr>
+<tr valign="top"><td><code>keep_last</code></td>
+<td>
+<p>For non-path/polygon layers should the last row be kept for
+subsequent frames.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p><strong>Deprecated</strong></p>
+</td></tr>
+</table>
+
+
+<h3>Label variables</h3>
+
+<p><code>transition_along</code> makes the following variables available for string
+literal interpretation, in addition to the general ones provided by
+<code><a href="../../gganimate/help/animate.html">animate()</a></code>:
+</p>
+
+<ul>
+<li> <p><strong>frame_along</strong> gives the position on the along-dimension that the current
+frame corresponds to
+</p>
+</li></ul>
+
+
+
+<h3>Object permanence</h3>
+
+<p><code>transition_reveal</code> uses the group aesthetic of each layer to identify
+which rows in the input data correspond to the same graphic element and will
+therefore define a whole to be revealed over the animation.
+The group aesthetic, if not set, will be calculated from the interaction of all
+discrete aesthetics in the layer (excluding <code>label</code>), so it is often better
+to set it explicitly when animating, to make sure your data is interpreted in
+the right way. If the group aesthetic is not set, and no discrete aesthetics
+exists then all rows will have the same group.
+</p>
+
+
+<h3>Computed Variables</h3>
+
+<p>It is possible to use variables calculated by the statistic to define the
+transition. Simply inclose the variable in <code>stat()</code> in the same way as when
+using computed variables in aesthetics.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other transitions: 
+<code><a href="../../gganimate/help/transition_components.html">transition_components</a>()</code>,
+<code><a href="../../gganimate/help/transition_events.html">transition_events</a>()</code>,
+<code><a href="../../gganimate/help/transition_filter.html">transition_filter</a>()</code>,
+<code><a href="../../gganimate/help/transition_layers.html">transition_layers</a>()</code>,
+<code><a href="../../gganimate/help/transition_manual.html">transition_manual</a>()</code>,
+<code><a href="../../gganimate/help/transition_null.html">transition_null</a>()</code>,
+<code><a href="../../gganimate/help/transition_states.html">transition_states</a>()</code>,
+<code><a href="../../gganimate/help/transition_time.html">transition_time</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(airquality, aes(Day, Temp, group = Month)) +
+  geom_line() +
+  transition_reveal(Day)
+
+# Non-paths will only show the current position, not the history
+anim1 &lt;- ggplot(airquality, aes(Day, Temp, group = Month)) +
+  geom_line() +
+  geom_point(colour = 'red', size = 3) +
+  transition_reveal(Day)
+
+# Points can be kept by giving them a unique group and set `keep = TRUE` (the
+# default)
+anim2 &lt;- ggplot(airquality, aes(Day, Temp, group = Month)) +
+  geom_line() +
+  geom_point(aes(group = seq_along(Day))) +
+  geom_point(colour = 'red', size = 3) +
+  transition_reveal(Day)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

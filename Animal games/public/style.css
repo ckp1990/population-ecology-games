@@ -1,0 +1,400 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  style.css — Scientist Dashboard & Game Layout
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* ── Reset & Base ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0a0f1a;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --border: #1e293b;
+  --accent-green: #10b981;
+  --accent-blue: #3b82f6;
+  --accent-amber: #f59e0b;
+  --accent-red: #ef4444;
+  --accent-purple: #8b5cf6;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --glow-green: rgba(16, 185, 129, 0.15);
+  --glow-blue: rgba(59, 130, 246, 0.15);
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Join Screen ──────────────────────────────────────────────────────────── */
+#join-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 24px;
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(16, 185, 129, 0.08) 0%,
+    transparent 60%
+  );
+}
+
+#join-screen h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#join-screen p {
+  color: var(--text-secondary);
+  max-width: 420px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.join-form {
+  display: flex;
+  gap: 10px;
+}
+
+.join-form input {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  width: 260px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.join-form input:focus {
+  border-color: var(--accent-green);
+}
+
+.join-form button,
+.btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent-green), #059669);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.join-form button:hover,
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn-amber {
+  background: linear-gradient(135deg, var(--accent-amber), #d97706);
+}
+.btn-amber:hover {
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+}
+
+.btn-red {
+  background: linear-gradient(135deg, var(--accent-red), #dc2626);
+}
+.btn-red:hover {
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* ── Game Container ───────────────────────────────────────────────────────── */
+#game-container {
+  display: none;
+  /* shown after join */
+}
+
+.game-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.game-col {
+  flex-shrink: 0;
+}
+
+#phaser-game {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(16, 185, 129, 0.1), 0 4px 20px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+}
+
+/* ── Dashboard Panel ──────────────────────────────────────────────────────── */
+.dashboard {
+  flex: 1;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  transition: border-color 0.2s;
+}
+
+.panel:hover {
+  border-color: #2d3a4d;
+}
+
+.panel h2 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+/* Phase badge */
+.phase-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.phase-capture {
+  background: var(--glow-green);
+  color: var(--accent-green);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.phase-recapture {
+  background: var(--glow-blue);
+  color: var(--accent-blue);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.phase-results {
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--accent-purple);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+
+.stat-card .value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.stat-card .label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.stat-green .value {
+  color: var(--accent-green);
+}
+.stat-blue .value {
+  color: var(--accent-blue);
+}
+.stat-amber .value {
+  color: var(--accent-amber);
+}
+.stat-purple .value {
+  color: var(--accent-purple);
+}
+
+/* Estimate highlight */
+.estimate-box {
+  text-align: center;
+  padding: 18px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.1),
+    rgba(59, 130, 246, 0.08)
+  );
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.estimate-box .value {
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.estimate-box .label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Player list */
+.player-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+
+.player-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.player-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.player-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.badge-captured {
+  background: var(--glow-green);
+  color: var(--accent-green);
+}
+
+.badge-recaptured {
+  background: var(--glow-blue);
+  color: var(--accent-blue);
+}
+
+/* Controls row */
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Event log */
+.event-log {
+  max-height: 140px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.event-log::-webkit-scrollbar {
+  width: 4px;
+}
+.event-log::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.event-log .event {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Formula display ──────────────────────────────────────────────────────── */
+.formula {
+  font-family: "Courier New", monospace;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+}
+
+.formula strong {
+  color: var(--text-primary);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .game-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  .dashboard {
+    min-width: unset;
+    width: 100%;
+    max-width: 800px;
+  }
+}

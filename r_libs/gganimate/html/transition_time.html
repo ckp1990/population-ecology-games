@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transition through distinct states in time</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transition_time {gganimate}"><tr><td>transition_time {gganimate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transition through distinct states in time</h2>
+
+<h3>Description</h3>
+
+<p>This is a variant of <code><a href="../../gganimate/help/transition_states.html">transition_states()</a></code> that is intended for data where
+the states are representing specific point in time. The transition length
+between the states will be set to correspond to the actual time difference
+between them.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+transition_time(time, range = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>time</code></td>
+<td>
+<p>An unquoted expression giving the time, and thus state
+membership, of each observation.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>The time range to animate. If <code>NULL</code> it will be set to the range
+of <code>time</code></p>
+</td></tr>
+</table>
+
+
+<h3>Label variables</h3>
+
+<p><code>transition_time</code> makes the following variables available for string
+literal interpretation, in addition to the general ones provided by
+<code><a href="../../gganimate/help/animate.html">animate()</a></code>:
+</p>
+
+<ul>
+<li> <p><strong>frame_time</strong> gives the time that the current frame corresponds to
+</p>
+</li></ul>
+
+
+
+<h3>Object permanence</h3>
+
+<p><code>transition_time</code> uses the group aesthetic of each layer to identify
+which rows in the input data correspond to the same graphic element and will
+therefore define which elements will turn into each other between time points.
+The group aesthetic, if not set, will be calculated from the interaction of all
+discrete aesthetics in the layer (excluding <code>label</code>), so it is often better
+to set it explicitly when animating, to make sure your data is interpreted in
+the right way. If the group aesthetic is not set, and no discrete aesthetics
+exists then all rows will have the same group. If the group aesthetic is not
+unique in each state, then rows will be matched first by group and then by
+index. Unmatched rows will appear/disappear, potentially using an enter or
+exit function.
+</p>
+
+
+<h3>Computed Variables</h3>
+
+<p>It is possible to use variables calculated by the statistic to define the
+transition. Simply inclose the variable in <code>stat()</code> in the same way as when
+using computed variables in aesthetics.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other transitions: 
+<code><a href="../../gganimate/help/transition_components.html">transition_components</a>()</code>,
+<code><a href="../../gganimate/help/transition_events.html">transition_events</a>()</code>,
+<code><a href="../../gganimate/help/transition_filter.html">transition_filter</a>()</code>,
+<code><a href="../../gganimate/help/transition_layers.html">transition_layers</a>()</code>,
+<code><a href="../../gganimate/help/transition_manual.html">transition_manual</a>()</code>,
+<code><a href="../../gganimate/help/transition_null.html">transition_null</a>()</code>,
+<code><a href="../../gganimate/help/transition_reveal.html">transition_reveal</a>()</code>,
+<code><a href="../../gganimate/help/transition_states.html">transition_states</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+anim &lt;- ggplot(airquality, aes(Day, Temp)) +
+  geom_point(aes(colour = factor(Month))) +
+  transition_time(Day)
+
+# Removing a time point will prolong the tweening between neighbouring time
+# points so the time dimension stays linear
+airquality_missing &lt;- airquality[airquality$Day &lt;= 10 | airquality$Day &gt;= 20, ]
+anim1 &lt;- ggplot(airquality_missing, aes(Day, Temp)) +
+  geom_point(aes(colour = factor(Month))) +
+  transition_time(Day)
+
+# Range can be constrained if needed
+anim2 &lt;- ggplot(airquality, aes(Day, Temp)) +
+  geom_point(aes(colour = factor(Month))) +
+  transition_time(Day, range = c(10L, 20L))
+
+# The group aesthetic is used to connect elements
+# No grouping
+anim3 &lt;- ggplot(airquality, aes(Day, Temp)) +
+  geom_line() +
+  transition_time(Month)
+
+# Group by month
+anim4 &lt;- ggplot(airquality, aes(Day, Temp)) +
+  geom_line(aes(group = Month)) +
+  transition_time(Month) +
+  enter_fade() +
+  exit_fade()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gganimate</em> version 1.0.8 <a href="00Index.html">Index</a>]</div>
+</body></html>
