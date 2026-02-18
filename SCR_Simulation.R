@@ -12,14 +12,34 @@
 ##############################################################################
 
 # ── 0. Packages ──────────────────────────────────────────────────────────────
-# Install any missing packages before loading.
-required_pkgs <- c(
-  "ggplot2", "gganimate", "tibble", "dplyr", "gifski"
-)
-new_pkgs <- required_pkgs[
-  !required_pkgs %in% installed.packages()[, "Package"]
-]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
+# Use a local library folder to avoid OneDrive write-permission issues.
+local_lib <- file.path(getwd(), "r_libs")
+if (!dir.exists(local_lib)) dir.create(local_lib, recursive = TRUE)
+.libPaths(c(local_lib, .libPaths()))
+
+repo <- "https://cloud.r-project.org"
+
+# Helper: install a specific CRAN version if not already present.
+# We pin versions compatible with R 4.1.0.
+ensure_pkg <- function(pkg, ver = NULL) {
+  if (requireNamespace(pkg, quietly = TRUE)) return(invisible())
+  if (is.null(ver)) {
+    install.packages(pkg, lib = local_lib, repos = repo)
+  } else {
+    if (!requireNamespace("remotes", quietly = TRUE))
+      install.packages("remotes", lib = local_lib, repos = repo)
+    remotes::install_version(pkg, version = ver,
+                             lib = local_lib, repos = repo,
+                             upgrade = "never")
+  }
+}
+
+# Install compatible package versions for R 4.1.0
+ensure_pkg("tibble")
+ensure_pkg("dplyr")
+ensure_pkg("gifski")
+ensure_pkg("ggplot2", "3.4.4")    # last version without S7 dependency
+ensure_pkg("gganimate", "1.0.8")  # works with ggplot2 3.4.x
 
 library(ggplot2)
 library(gganimate)
