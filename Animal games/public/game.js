@@ -21,18 +21,20 @@ const playerListEl = document.getElementById("player-list");
 const eventLogEl = document.getElementById("event-log");
 
 // ── Game constants ──────────────────────────────────────────────────────────
-const MAP_W = 800;
-const MAP_H = 600;
-const SPEED = 200;
+const MAP_W = 2000;
+const MAP_H = 2000;
+const VIEW_W = 800;   // viewport (canvas) size
+const VIEW_H = 600;
+const SPEED = 250;
 const CAPTURE_RADIUS = 50;
 
-// Camera positions must match server.js
+// Camera positions must match server.js (spread across 2000×2000 map)
 const CAMERAS = [
-    { id: 1, x: 160, y: 120 },
-    { id: 2, x: 640, y: 120 },
-    { id: 3, x: 400, y: 300 },
-    { id: 4, x: 160, y: 480 },
-    { id: 5, x: 640, y: 480 },
+    { id: 1, x: 400, y: 400 },
+    { id: 2, x: 1600, y: 400 },
+    { id: 3, x: 1000, y: 1000 },
+    { id: 4, x: 400, y: 1600 },
+    { id: 5, x: 1600, y: 1600 },
 ];
 
 // ── Phaser variables (set after scene starts) ───────────────────────────────
@@ -69,12 +71,15 @@ nameInput.addEventListener("keydown", (e) => {
 function startPhaser() {
     const config = {
         type: Phaser.AUTO,
-        width: MAP_W,
-        height: MAP_H,
+        width: VIEW_W,
+        height: VIEW_H,
         parent: "phaser-game",
         backgroundColor: "#1a2e1a",
         scene: { preload, create, update },
-        physics: { default: "arcade" },
+        physics: {
+            default: "arcade",
+            arcade: { gravity: { y: 0 } },
+        },
     };
     phaserGame = new Phaser.Game(config);
 }
@@ -117,31 +122,39 @@ function preload() {
 function create() {
     const scene = this;
 
-    // Background forest ambience — scatter decorative trees
-    for (let i = 0; i < 60; i++) {
+    // Set world bounds to the full 2000×2000 map
+    scene.physics.world.setBounds(0, 0, MAP_W, MAP_H);
+
+    // Map border so players can see the edges
+    const border = scene.add.graphics();
+    border.lineStyle(3, 0x3a5a3a, 0.6);
+    border.strokeRect(0, 0, MAP_W, MAP_H);
+
+    // Background forest ambience — scatter more trees for the larger map
+    for (let i = 0; i < 300; i++) {
         const tx = Phaser.Math.Between(10, MAP_W - 10);
         const ty = Phaser.Math.Between(10, MAP_H - 10);
         const s = Phaser.Math.FloatBetween(0.6, 1.8);
         scene.add.image(tx, ty, "tree").setScale(s).setAlpha(0.35);
     }
 
-    // Grid lines (subtle)
+    // Grid lines (subtle, wider spacing for large map)
     const gridGfx = scene.add.graphics();
     gridGfx.lineStyle(1, 0x2a3a2a, 0.3);
-    for (let gx = 0; gx <= MAP_W; gx += 80) {
+    for (let gx = 0; gx <= MAP_W; gx += 200) {
         gridGfx.lineBetween(gx, 0, gx, MAP_H);
     }
-    for (let gy = 0; gy <= MAP_H; gy += 80) {
+    for (let gy = 0; gy <= MAP_H; gy += 200) {
         gridGfx.lineBetween(0, gy, MAP_W, gy);
     }
 
     // Cameras are HIDDEN from players — no visible sprites or labels.
     // Detection still works via the overlap check in update().
 
-    // Player sprite
+    // Player sprite — spawn at random position
     mySprite = scene.physics.add.image(
-        MAP_W / 2 + Phaser.Math.Between(-30, 30),
-        MAP_H / 2 + Phaser.Math.Between(-30, 30),
+        Phaser.Math.Between(100, MAP_W - 100),
+        Phaser.Math.Between(100, MAP_H - 100),
         "animal"
     );
     mySprite.setTint(Phaser.Display.Color.HexStringToColor(myColour).color);
@@ -157,6 +170,10 @@ function create() {
     glow.fillCircle(0, 0, 18);
     glow.setDepth(9);
     scene.myGlow = glow;
+
+    // Viewport camera follows the player across the large map
+    scene.cameras.main.setBounds(0, 0, MAP_W, MAP_H);
+    scene.cameras.main.startFollow(mySprite, true, 0.08, 0.08);
 
     // Keyboard input
     cursors = scene.input.keyboard.createCursorKeys();
