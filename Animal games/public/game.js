@@ -275,54 +275,9 @@ socket.on("state-update", (data) => {
     }
 });
 
-// ── Other players move ──────────────────────────────────────────────────────
-socket.on("players-update", (players) => {
-    if (!phaserGame || !phaserGame.scene.scenes[0]) return;
-    const scene = phaserGame.scene.scenes[0];
-
-    Object.entries(players).forEach(([sid, p]) => {
-        if (sid === socket.id) return; // skip self
-
-        if (!otherSprites[sid]) {
-            // Create sprite for new player
-            const s = scene.add.image(p.x, p.y, "animal").setDepth(8);
-            s.setTint(Phaser.Display.Color.HexStringToColor(p.colour).color);
-            otherSprites[sid] = s;
-
-            // Name label
-            const label = scene.add
-                .text(p.x, p.y - 18, p.name, {
-                    fontSize: "10px",
-                    color: "#ccc",
-                    fontFamily: "Inter, sans-serif",
-                })
-                .setOrigin(0.5)
-                .setDepth(8);
-            nameLabels[sid] = label;
-        } else {
-            // Smooth lerp to new position
-            const s = otherSprites[sid];
-            s.x += (p.x - s.x) * 0.3;
-            s.y += (p.y - s.y) * 0.3;
-            if (nameLabels[sid]) {
-                nameLabels[sid].x = s.x;
-                nameLabels[sid].y = s.y - 18;
-            }
-        }
-    });
-
-    // Remove sprites of disconnected players
-    Object.keys(otherSprites).forEach((sid) => {
-        if (!players[sid]) {
-            otherSprites[sid].destroy();
-            delete otherSprites[sid];
-            if (nameLabels[sid]) {
-                nameLabels[sid].destroy();
-                delete nameLabels[sid];
-            }
-        }
-    });
-});
+// ── Other players: intentionally NOT rendered on the map ────────────────────
+// Each player only sees their own animal, just like in a real ecology study.
+socket.on("players-update", () => { });
 
 // ── Capture event (flash effect) ────────────────────────────────────────────
 socket.on("capture-event", (data) => {
