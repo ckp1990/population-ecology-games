@@ -21,13 +21,13 @@ app.use(express.static(path.join(__dirname, "public")));
 // ── Configuration ───────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 
-// Camera-trap positions (x, y) on the 800 × 600 game map
+// Camera-trap positions (x, y) on the 2000 × 2000 game map
 const CAMERAS = [
-  { id: 1, x: 160, y: 120 },
-  { id: 2, x: 640, y: 120 },
-  { id: 3, x: 400, y: 300 },
-  { id: 4, x: 160, y: 480 },
-  { id: 5, x: 640, y: 480 },
+  { id: 1, x: 400, y: 400 },
+  { id: 2, x: 1600, y: 400 },
+  { id: 3, x: 1000, y: 1000 },
+  { id: 4, x: 400, y: 1600 },
+  { id: 5, x: 1600, y: 1600 },
 ];
 
 // Detection radius — how close a sprite must be to trigger a capture (pixels)
@@ -91,8 +91,8 @@ io.on("connection", (socket) => {
 
     players[socket.id] = {
       name: trimmed,
-      x: 400 + Math.random() * 40 - 20,
-      y: 300 + Math.random() * 40 - 20,
+      x: 1000 + Math.random() * 40 - 20,
+      y: 1000 + Math.random() * 40 - 20,
       colour,
     };
 
